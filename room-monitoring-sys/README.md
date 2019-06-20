@@ -41,10 +41,10 @@ The code ouputs a serie of strings that represent the data gathered from the sen
 # Circuit Diagrams
 
 **Schematic**
-![](/media/room_monioring_sys_schematic.PNG)
+![](https://github.com/heidinv12/room-monitoring-system/blob/master/room-monitoring-sys/media/room_monioring_sys_schematic.PNG)
 
 **Breadboard**
-![](/media/room_monioring_sys_breadboard.PNG)
+![](https://github.com/heidinv12/room-monitoring-system/blob/master/room-monitoring-sys/media/room_monioring_sys_breadboard.PNG)
 
 
 # Code Description
