@@ -2,8 +2,8 @@
 
 This project was created to use alongside [room-monitoring-backend](https://github.com/heidinv12/room-monitoring-backend). The images below show what the frontend looks like:
 
-![](/media/frontend_forms.PNG)
-![](/media/frontend_tables.PNG)
+![](https://github.com/heidinv12/room-monitoring-system/blob/master/room-monitoring-frontend/media/frontend_forms.PNG)
+![](https://github.com/heidinv12/room-monitoring-system/blob/master/room-monitoring-frontend/media/frontend_tables.PNG)
 
 In here ```createConfigData``` endpoint from [room-monitoring-backend](https://github.com/heidinv12/room-monitoring-backend) is used to create new temperature and humidity configurations. 
 
