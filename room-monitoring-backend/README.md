@@ -22,7 +22,7 @@ I decided to design it as a serverless component so I could focus all my time on
 
 The following is a diagram of how the endpoints in the backend interact with DynamoDB, S3 and Twilio as well as [room-monitoring-frontend](https://github.com/heidinv12/room-monitoring-frontend) and [room-monitoring-serial-communicator](https://github.com/heidinv12/room-monitoring-serial-comm).
 
-![](/media/backend_diagram.PNG)
+![](https://github.com/heidinv12/room-monitoring-system/blob/master/room-monitoring-backend/media/backend_diagram.PNG)
 
 **Endpoints**
 
@@ -38,4 +38,4 @@ The following is a diagram of how the endpoints in the backend interact with Dyn
 
 Here is what the phone notifications look like:
 
-![](/media/backend_notification.jpg)
+![](https://github.com/heidinv12/room-monitoring-system/blob/master/room-monitoring-backend/media/backend_notification.jpg)
