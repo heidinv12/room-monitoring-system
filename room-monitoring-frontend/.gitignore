@@ -1,0 +1,4 @@
+# build files
+dist/
+node_modules/
+tests/

@@ -1,0 +1,118 @@
+service: service
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: python2.7
+  region: us-east-1
+  environment:
+    REGION: ${self:provider.region}
+    CONFIG_TABLE: ${self:custom.env.config_table}
+    PHONES_TABLE: ${self:custom.env.phone_table}
+    S3_BUCKET: ${self:custom.env.bucket_name}
+    TWILIO_ACCOUNT_SID: ${self:custom.env.twilio_acccount_sid}
+    TWILIO_AUTH_TOKEN: ${self:custom.env.twilio_auth_token}
+    TWILIO_FROM_PHONE: ${self:custom.env.twilio_from_phone_number}
+
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:DescribeTable"
+        - "dynamodb:Query"
+        - "dynamodb:Scan"
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+        - "s3:PutObject"
+        - "s3:GetObject"
+        - "s3:DeleteObject"
+        - "s3:PostObject"
+        - "s3:HeadObject"
+        - "s3:ListBucket"
+      Resource: "*"
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  env: ${file(envvariables.yml)}
+
+functions:
+  dataprocessing:
+    handler: handlers/dataProcessing.analyze_data
+    description: function to upload data to S3
+    events:
+      - http:
+          path: processing/
+          method: post
+
+  cofigdatacreation:
+    handler: handlers/createConfigData.create
+    description: stores new config data in a dynamodb table
+    events:
+      - http:
+          path: createconfigdata/
+          method: post
+
+  phonedatacreation:
+    handler: handlers/createPhoneData.create_phone
+    description: stores new phones data in a dynamodb table
+    events:
+      - http:
+          path: createphonedata/
+          method: post
+
+  notificationworker:
+    handler: handlers/notificationWorker.notify
+    description: compares S3 latest obj with the newest config data and notifies the user is needed
+    events:
+      - s3:
+          bucket: sensorresults
+          event: s3:ObjectCreated:*
+
+  getdata:
+    handler: handlers/getData.get_data
+    description: returns all dat from S3 bucket and all congif and phones information
+    events:
+      - http:
+          path: getdata/
+          method: get
+
+  deletephone:
+    handler: handlers/deletePhone.delete_phone
+    description: deletes specified phone record form Dynamodb
+    events:
+      - http:
+          path: deletephone/
+          method: post
+
+resources:
+  - Resources:
+      ConfigDataTable:
+        Type: AWS::DynamoDB::Table
+        Properties:
+          AttributeDefinitions:
+            - AttributeName: CreatedAt
+              AttributeType: S
+          KeySchema:
+            - AttributeName: CreatedAt
+              KeyType: HASH
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+
+      Phones:
+        Type: AWS::DynamoDB::Table
+        Properties:
+          AttributeDefinitions:
+            - AttributeName: Phone
+              AttributeType: S
+          KeySchema:
+            - AttributeName: Phone
+              KeyType: HASH
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
